@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>영어 발표 표현집</title>
+  <meta name="theme-color" content="#1b1f2a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #49bf9d;
+      --accent: #6fc3df;
+      --warn: #e8a87c;
+      --bg: #1b1f2a;
+      --bg2: #242837;
+      --bg3: #2e3141;
+      --text: #c8ccd8;
+      --text-strong: #ffffff;
+      --muted: #8a90a2;
+      --border: rgba(255,255,255,0.08);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Source Sans 3', 'Noto Sans KR', system-ui, sans-serif;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    a { color: var(--primary); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+
+    header.hero {
+      padding: 48px 0 24px;
+      text-align: center;
+    }
+    header.hero h1 { color: var(--text-strong); font-size: 2rem; letter-spacing: -0.01em; }
+    header.hero p { color: var(--muted); margin-top: 6px; }
+
+    nav.tabs {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(27,31,42,0.95);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav.tabs .wrap { display: flex; gap: 4px; overflow-x: auto; padding-top: 8px; padding-bottom: 8px; }
+    nav.tabs button {
+      flex: 0 0 auto;
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border); border-radius: 999px;
+      padding: 8px 16px; font: inherit; font-weight: 600; cursor: pointer;
+    }
+    nav.tabs button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      margin: 20px 0 8px;
+    }
+    .toolbar input[type=search] {
+      flex: 1 1 220px; min-width: 0;
+      background: var(--bg2); color: var(--text-strong);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 12px; font: inherit;
+    }
+    .toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 9px 12px; cursor: pointer; user-select: none; font-size: 0.95rem;
+    }
+    .hint { color: var(--muted); font-size: 0.9rem; margin-bottom: 12px; }
+
+    section.panel { display: none; padding-bottom: 64px; }
+    section.panel.active { display: block; }
+
+    .group { margin-top: 28px; }
+    .group h2 {
+      color: var(--text-strong); font-size: 1.2rem;
+      display: flex; align-items: baseline; gap: 8px;
+      border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 12px;
+    }
+    .group h2 small { color: var(--muted); font-weight: 400; font-size: 0.9rem; }
+
+    .card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px 14px; margin-bottom: 8px;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+    .card .body { flex: 1; min-width: 0; }
+    .en { color: var(--text-strong); font-size: 1.05rem; font-weight: 600; }
+    .ko { color: var(--muted); font-size: 0.95rem; margin-top: 2px; }
+    .note { color: var(--accent); font-size: 0.85rem; margin-top: 4px; }
+    .actions { display: flex; gap: 4px; flex: 0 0 auto; }
+    .iconbtn {
+      background: var(--bg3); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; width: 34px; height: 34px; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem;
+    }
+    .iconbtn:hover { color: var(--primary); border-color: var(--primary); }
+    .iconbtn.on { color: #f5c542; border-color: #f5c542; }
+
+    /* soften pairs */
+    .pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; }
+    .pair .from { color: var(--warn); text-decoration: line-through; text-decoration-color: rgba(232,168,124,0.5); }
+    .pair .arrow { color: var(--muted); }
+    @media (max-width: 600px) {
+      .pair { grid-template-columns: 1fr; gap: 2px; }
+      .pair .arrow { display: none; }
+      .card { flex-direction: column; }
+      .actions { align-self: flex-end; }
+    }
+
+    /* practice mode: hide English until tapped */
+    body.practice .en { filter: blur(6px); cursor: pointer; transition: filter .15s; }
+    body.practice .en.revealed { filter: none; }
+
+    /* forms */
+    form.add {
+      display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 8px;
+      background: var(--bg2); border: 1px dashed var(--border); border-radius: 10px; padding: 12px;
+      margin-top: 12px;
+    }
+    form.add input {
+      min-width: 0; background: var(--bg); color: var(--text-strong);
+      border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font: inherit;
+    }
+    form.add button, .btn {
+      background: var(--primary); color: #fff; border: 0; border-radius: 6px;
+      padding: 8px 14px; font: inherit; font-weight: 600; cursor: pointer;
+    }
+    .btn.ghost { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+    @media (max-width: 600px) { form.add { grid-template-columns: 1fr; } }
+
+    textarea.script {
+      width: 100%; min-height: 280px; resize: vertical;
+      background: var(--bg2); color: var(--text-strong);
+      border: 1px solid var(--border); border-radius: 10px; padding: 14px; font: inherit; line-height: 1.7;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center; }
+    .empty { color: var(--muted); padding: 16px; text-align: center; border: 1px dashed var(--border); border-radius: 10px; }
+    .toast {
+      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+      background: var(--primary); color: #fff; padding: 8px 16px; border-radius: 999px;
+      opacity: 0; transition: opacity .2s; pointer-events: none; font-weight: 600;
+    }
+    .toast.show { opacity: 1; }
+    footer { color: var(--muted); text-align: center; font-size: 0.85rem; padding: 24px 0 40px; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1>영어 발표 표현집</h1>
+      <p>자주 쓰는 문장, 부드럽게 말하는 법, 내 분야 단어를 한곳에서 준비하기</p>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <div class="wrap" role="tablist">
+      <button data-tab="phrases" class="active">자주 쓰는 문장</button>
+      <button data-tab="soften">부드럽게 말하기</button>
+      <button data-tab="vocab">내 분야 단어</button>
+      <button data-tab="starred">★ 즐겨찾기</button>
+      <button data-tab="script">발표 원고</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <input type="search" id="q" placeholder="영어나 한국어로 검색 (예: question, 마무리)" />
+      <label class="toggle"><input type="checkbox" id="practice" /> 연습 모드</label>
+    </div>
+    <p class="hint">🔊 발음 듣기 · 📋 복사 · ☆ 즐겨찾기. 연습 모드에서는 영어가 가려지고, 한국어를 보고 말해본 뒤 눌러서 확인할 수 있어요.</p>
+
+    <section class="panel active" id="panel-phrases"></section>
+    <section class="panel" id="panel-soften"></section>
+    <section class="panel" id="panel-vocab"></section>
+    <section class="panel" id="panel-starred"></section>
+    <section class="panel" id="panel-script">
+      <div class="group">
+        <h2>발표 원고 <small>이 브라우저에 자동 저장돼요</small></h2>
+        <textarea class="script" id="scriptText" placeholder="Good morning, everyone. Today I'd like to walk you through..."></textarea>
+        <div class="row">
+          <button class="btn" id="readScript">🔊 원고 읽어주기</button>
+          <button class="btn ghost" id="stopScript">■ 멈추기</button>
+          <label class="toggle">속도
+            <select id="rate" style="background:transparent;color:inherit;border:0;font:inherit">
+              <option value="0.8">느리게</option>
+              <option value="0.95" selected>보통</option>
+              <option value="1.1">빠르게</option>
+            </select>
+          </label>
+          <span class="hint" id="wordCount" style="margin:0"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>English_Edu · 내가 추가한 단어, 즐겨찾기, 원고는 이 기기의 브라우저에만 저장됩니다.</footer>
+  <div class="toast" id="toast">복사했어요</div>
+
+<script>
+/* ───────────── 데이터 ───────────── */
+const PHRASES = [
+  { title: '시작하기', sub: 'Opening', items: [
+    { en: "Good morning, everyone. Thank you for being here.", ko: "안녕하세요 여러분, 와주셔서 감사합니다." },
+    { en: "Let me briefly introduce myself. I'm ___ from ___.", ko: "간단히 제 소개를 하겠습니다. 저는 ___의 ___입니다." },
+    { en: "Today, I'd like to talk about ___.", ko: "오늘은 ___에 대해 말씀드리려고 합니다." },
+    { en: "The purpose of today's presentation is to ___.", ko: "오늘 발표의 목적은 ___입니다." },
+    { en: "By the end of this talk, you'll have a clear picture of ___.", ko: "발표가 끝날 때쯤이면 ___에 대해 명확히 이해하실 수 있을 거예요." },
+    { en: "I've divided my presentation into three parts.", ko: "발표는 세 부분으로 나눴습니다." },
+    { en: "First, I'll cover ___. Then, ___. Finally, ___.", ko: "먼저 ___, 다음으로 ___, 마지막으로 ___을 다루겠습니다." },
+    { en: "This should take about 15 minutes, and there'll be time for questions at the end.", ko: "약 15분 정도 걸리고, 끝에 질문 시간이 있습니다." },
+    { en: "Please feel free to interrupt me if anything is unclear.", ko: "이해가 안 되는 부분이 있으면 언제든 말씀해 주세요.", note: "질문을 중간에 받고 싶을 때" },
+  ]},
+  { title: '넘어가기', sub: 'Transitions', items: [
+    { en: "Let's move on to the next point.", ko: "다음 내용으로 넘어가겠습니다." },
+    { en: "Now, let's take a look at ___.", ko: "이제 ___을 살펴보겠습니다." },
+    { en: "That brings me to my next point.", ko: "그래서 다음 내용으로 이어집니다." },
+    { en: "Building on that, ___.", ko: "이를 바탕으로, ___." },
+    { en: "Before I move on, let me just recap.", ko: "넘어가기 전에 잠깐 정리하겠습니다." },
+    { en: "On the other hand, ___.", ko: "반면에, ___." },
+    { en: "To put it another way, ___.", ko: "다르게 말하면, ___." },
+    { en: "Let me come back to this in a moment.", ko: "이 부분은 잠시 후에 다시 말씀드릴게요." },
+    { en: "I'll go into more detail on this later.", ko: "이건 뒤에서 더 자세히 다루겠습니다." },
+  ]},
+  { title: '자료 설명하기', sub: 'Slides & data', items: [
+    { en: "As you can see on this slide, ___.", ko: "이 슬라이드에서 보시는 것처럼, ___." },
+    { en: "This graph shows ___.", ko: "이 그래프는 ___을 보여줍니다." },
+    { en: "Let me draw your attention to ___.", ko: "___에 주목해 주세요." },
+    { en: "The key takeaway here is ___.", ko: "여기서 핵심은 ___입니다." },
+    { en: "There was a sharp increase in ___.", ko: "___이 급격히 증가했습니다." },
+    { en: "The numbers have remained steady since ___.", ko: "___ 이후로 수치가 안정적으로 유지되고 있습니다." },
+    { en: "Compared to last year, ___ went up by 20 percent.", ko: "작년과 비교해 ___이 20% 증가했습니다." },
+    { en: "What this means is ___.", ko: "이게 의미하는 바는 ___입니다." },
+    { en: "To give you an example, ___.", ko: "예를 들어 보면, ___." },
+  ]},
+  { title: '제품·솔루션 소개하기', sub: 'Introducing a product', items: [
+    { en: "Let me introduce our latest solution for ___.", ko: "___을 위한 저희 최신 솔루션을 소개하겠습니다." },
+    { en: "This product is designed for ___.", ko: "이 제품은 ___을 위해 설계되었습니다." },
+    { en: "One of the main advantages is ___.", ko: "주요 장점 중 하나는 ___입니다." },
+    { en: "What makes this different from other products is ___.", ko: "다른 제품과의 차이점은 ___입니다." },
+    { en: "This allows you to ___.", ko: "이를 통해 ___할 수 있습니다." },
+    { en: "A typical application is ___.", ko: "대표적인 적용 사례는 ___입니다." },
+    { en: "Let me show you how this works in a real application.", ko: "실제 현장에서 어떻게 작동하는지 보여드리겠습니다." },
+    { en: "Many of our customers are facing challenges with ___.", ko: "많은 고객분들이 ___ 문제를 겪고 계십니다." },
+    { en: "This solution addresses exactly that problem.", ko: "이 솔루션이 바로 그 문제를 해결합니다." },
+    { en: "It's fully compatible with your existing system.", ko: "기존 시스템과 완벽하게 호환됩니다." },
+  ]},
+  { title: '강조하기', sub: 'Emphasis', items: [
+    { en: "I'd like to emphasize that ___.", ko: "___을 강조하고 싶습니다." },
+    { en: "What's really important here is ___.", ko: "여기서 정말 중요한 건 ___입니다." },
+    { en: "If there's one thing to remember from today, it's this.", ko: "오늘 한 가지만 기억하신다면, 바로 이것입니다." },
+    { en: "This is exactly why ___.", ko: "바로 이것이 ___한 이유입니다." },
+  ]},
+  { title: '질문 받기', sub: 'Q&A', items: [
+    { en: "That brings us to the end. I'm happy to take any questions.", ko: "여기까지입니다. 질문 있으시면 편하게 해주세요." },
+    { en: "That's a great question. Thank you.", ko: "좋은 질문 감사합니다." },
+    { en: "Could you repeat the question, please?", ko: "질문을 다시 한번 말씀해 주시겠어요?" },
+    { en: "Just to make sure I understand, you're asking about ___?", ko: "제가 제대로 이해했는지 확인하면, ___에 대해 물으시는 거죠?", note: "질문을 못 알아들었을 때 시간도 벌 수 있어요" },
+    { en: "Let me think about that for a second.", ko: "잠시 생각해 볼게요." },
+    { en: "I don't have the exact figure with me, but I'll follow up after the meeting.", ko: "정확한 수치는 지금 없지만, 회의 후에 따로 알려드리겠습니다." },
+    { en: "That's a bit outside the scope of today's talk, but I'd be happy to discuss it afterwards.", ko: "오늘 발표 범위에서는 조금 벗어나지만, 끝나고 따로 이야기 나누면 좋겠습니다." },
+    { en: "Does that answer your question?", ko: "답변이 되셨나요?" },
+    { en: "Are there any other questions?", ko: "다른 질문 있으신가요?" },
+  ]},
+  { title: '마무리하기', sub: 'Closing', items: [
+    { en: "To sum up, ___.", ko: "요약하자면, ___." },
+    { en: "Let me quickly go over the main points again.", ko: "핵심 내용을 빠르게 다시 정리하겠습니다." },
+    { en: "In conclusion, ___.", ko: "결론적으로, ___." },
+    { en: "Our next step is to ___.", ko: "다음 단계는 ___입니다." },
+    { en: "Thank you for your time and attention.", ko: "시간 내어 들어주셔서 감사합니다." },
+    { en: "If you have any further questions, feel free to reach out to me.", ko: "추가로 궁금한 점이 있으면 편하게 연락 주세요." },
+  ]},
+  { title: '위기 상황', sub: 'When things go wrong', items: [
+    { en: "Sorry, let me rephrase that.", ko: "죄송해요, 다시 말씀드릴게요." },
+    { en: "Sorry, I lost my train of thought. Where was I?", ko: "죄송해요, 잠깐 생각이 끊겼네요. 어디까지 했죠?" },
+    { en: "It seems we're having some technical issues. Bear with me for a moment.", ko: "기술적인 문제가 있는 것 같네요. 잠시만 기다려 주세요." },
+    { en: "I'm running a bit short on time, so let me skip ahead.", ko: "시간이 조금 부족해서 앞으로 넘어가겠습니다." },
+    { en: "What I meant to say was ___.", ko: "제가 말하려던 건 ___입니다." },
+  ]},
+];
+
+const SOFTEN = [
+  { title: '의견 말하기', sub: '단정 대신 여지 두기', items: [
+    { from: "This is wrong.", en: "I'm not sure this is quite right.", ko: "이게 맞는지 잘 모르겠어요." },
+    { from: "You should do this.", en: "It might be worth considering ___.", ko: "___을 고려해 보면 좋을 것 같아요." },
+    { from: "That won't work.", en: "I have some concerns about whether that will work.", ko: "그게 잘 될지 조금 걱정이 있어요." },
+    { from: "I disagree.", en: "I see your point, but I see it a little differently.", ko: "무슨 말씀인지 알겠지만, 저는 조금 다르게 봐요." },
+    { from: "We must change it.", en: "I think we may need to rethink this.", ko: "이건 다시 생각해 봐야 할 것 같아요." },
+    { from: "This is the best option.", en: "This seems to be the most promising option.", ko: "이게 가장 유망한 선택지인 것 같아요." },
+  ]},
+  { title: '부탁하기', sub: '명령 대신 요청', items: [
+    { from: "Send me the file.", en: "Could you send me the file when you get a chance?", ko: "시간 될 때 파일 좀 보내주시겠어요?" },
+    { from: "Explain it again.", en: "Would you mind explaining that one more time?", ko: "한 번만 더 설명해 주실 수 있을까요?" },
+    { from: "I need your feedback.", en: "I'd really appreciate your feedback on this.", ko: "이에 대한 피드백을 주시면 정말 감사하겠습니다." },
+    { from: "Check this.", en: "Would you be able to take a look at this?", ko: "이것 좀 봐주실 수 있을까요?" },
+  ]},
+  { title: '문제나 나쁜 소식 전하기', sub: '부드럽게 전달', items: [
+    { from: "There's a problem.", en: "There's one issue I'd like to flag.", ko: "한 가지 짚고 넘어가고 싶은 부분이 있어요." },
+    { from: "We failed.", en: "Unfortunately, the results weren't what we'd hoped for.", ko: "안타깝게도 결과가 기대만큼 나오지 않았어요." },
+    { from: "It's delayed.", en: "We're running slightly behind schedule.", ko: "일정이 조금 늦어지고 있어요." },
+    { from: "The sales dropped.", en: "Sales came in a bit lower than expected.", ko: "매출이 예상보다 조금 낮게 나왔어요." },
+    { from: "I don't know.", en: "That's a good question. I'll need to check and get back to you.", ko: "좋은 질문이에요. 확인해 보고 다시 말씀드릴게요." },
+    { from: "You're late with this.", en: "Just checking in on the status of this.", ko: "진행 상황 확인차 연락드려요." },
+  ]},
+  { title: '말을 부드럽게 만드는 단어', sub: 'Hedging words', items: [
+    { from: "", en: "I think / I believe / I feel", ko: "제 생각에는 (단정을 피함)", note: "I think the plan is too risky. → 개인 의견으로 들려요" },
+    { from: "", en: "It seems / It appears", ko: "~인 것 같다 (사실처럼 단정하지 않음)", note: "It seems the data is incomplete." },
+    { from: "", en: "a bit / slightly / somewhat", ko: "조금, 약간 (강도를 낮춤)", note: "The cost is a bit higher than planned." },
+    { from: "", en: "might / could / may", ko: "~일 수도 있다 (가능성으로 표현)", note: "This could cause some delays." },
+    { from: "", en: "perhaps / maybe / possibly", ko: "아마도", note: "Perhaps we could try a different approach." },
+    { from: "", en: "Would it be possible to ___?", ko: "~하는 게 가능할까요?", note: "Would it be possible to extend the deadline?" },
+    { from: "", en: "I was wondering if ___.", ko: "혹시 ~해주실 수 있을까 해서요.", note: "I was wondering if you could share the slides." },
+    { from: "", en: "To be honest, ___.", ko: "솔직히 말씀드리면 (반대 의견 앞에 붙이면 덜 공격적)", note: "To be honest, I'm not fully convinced yet." },
+  ]},
+  { title: '쉬운 말 → 발표용 말', sub: '조금 더 세련되게', items: [
+    { from: "get", en: "obtain / receive / gain", ko: "얻다, 받다" },
+    { from: "show", en: "demonstrate / illustrate / indicate", ko: "보여주다, 나타내다" },
+    { from: "big", en: "significant / substantial / considerable", ko: "큰, 상당한" },
+    { from: "go up / go down", en: "increase, rise / decrease, decline", ko: "오르다 / 내리다" },
+    { from: "think about", en: "consider / take into account", ko: "고려하다" },
+    { from: "find out", en: "discover / identify / determine", ko: "알아내다, 파악하다" },
+    { from: "help", en: "support / facilitate / contribute to", ko: "돕다, 기여하다" },
+    { from: "a lot of", en: "a large number of / a great deal of", ko: "많은 (셀 수 있음 / 없음)" },
+  ]},
+];
+
+// 기본 단어장: 산업 자동화 분야 + 발표·업무 공통. 단어마다 외우기 좋은 예문(note)을 붙임.
+const VOCAB_BASE = [
+  { title: 'PLC·제어', sub: 'Control', items: [
+    { en: "PLC (programmable logic controller)", ko: "PLC, 프로그래머블 로직 컨트롤러", note: "The PLC controls the entire production line." },
+    { en: "controller", ko: "제어기", note: "This controller handles up to 256 I/O points." },
+    { en: "I/O module", ko: "입출력 모듈", note: "You can add I/O modules as the system grows." },
+    { en: "digital / analog signal", ko: "디지털 / 아날로그 신호", note: "The module accepts both digital and analog signals." },
+    { en: "cycle time", ko: "사이클 타임, 처리 주기", note: "The new CPU cuts the cycle time in half." },
+    { en: "real-time", ko: "실시간", note: "Data is processed in real time." },
+    { en: "programming environment", ko: "프로그래밍 환경, 개발 툴", note: "Engineers can program it in a familiar environment." },
+    { en: "open control platform", ko: "개방형 제어 플랫폼", note: "An open platform lets you combine PLC logic with high-level languages." },
+    { en: "edge computing", ko: "엣지 컴퓨팅", note: "Edge computing lets you analyze data directly on site." },
+    { en: "remote monitoring", ko: "원격 모니터링", note: "Remote monitoring reduces the need for site visits." },
+  ]},
+  { title: '네트워크·통신', sub: 'Networking', items: [
+    { en: "industrial Ethernet", ko: "산업용 이더넷", note: "Industrial Ethernet is becoming the standard on the factory floor." },
+    { en: "managed / unmanaged switch", ko: "매니지드 / 언매니지드 스위치", note: "A managed switch gives you full control over network traffic." },
+    { en: "protocol", ko: "프로토콜, 통신 규약", note: "The switch supports PROFINET and EtherNet/IP protocols." },
+    { en: "redundancy", ko: "이중화", note: "Ring redundancy keeps the network running even if one cable fails." },
+    { en: "bandwidth", ko: "대역폭", note: "Gigabit ports provide enough bandwidth for video data." },
+    { en: "latency", ko: "지연 시간", note: "Low latency is critical for motion control." },
+    { en: "port", ko: "포트", note: "This model has eight copper ports and two fiber ports." },
+    { en: "topology", ko: "네트워크 구성(토폴로지)", note: "Let me show you a typical network topology." },
+    { en: "connectivity", ko: "연결성", note: "Seamless connectivity from the field level to the cloud." },
+    { en: "IT/OT convergence", ko: "IT와 OT의 융합", note: "IT/OT convergence is a key trend in smart factories." },
+  ]},
+  { title: '보안 (mGuard 등)', sub: 'Industrial security', items: [
+    { en: "cybersecurity", ko: "사이버 보안", note: "Cybersecurity is no longer optional in industrial networks." },
+    { en: "firewall", ko: "방화벽", note: "The built-in firewall blocks unauthorized access." },
+    { en: "VPN (virtual private network)", ko: "가상 사설망", note: "Engineers can access machines securely via VPN." },
+    { en: "secure remote access", ko: "안전한 원격 접속", note: "Secure remote access saves travel time for service teams." },
+    { en: "network segmentation", ko: "네트워크 분리", note: "Segmentation limits the spread of an attack." },
+    { en: "vulnerability", ko: "취약점", note: "Legacy systems often have known vulnerabilities." },
+    { en: "unauthorized access", ko: "무단 접근", note: "This prevents unauthorized access to the control network." },
+    { en: "compliance (IEC 62443)", ko: "규정 준수 (IEC 62443)", note: "Our solutions help customers achieve IEC 62443 compliance." },
+  ]},
+  { title: '릴레이·신호변환', sub: 'Relays & signal conditioning', items: [
+    { en: "relay", ko: "릴레이", note: "Relays provide reliable switching between control and load circuits." },
+    { en: "solid-state relay", ko: "반도체 릴레이(SSR)", note: "Solid-state relays have no moving parts, so they last longer." },
+    { en: "contact", ko: "접점", note: "The relay has two changeover contacts." },
+    { en: "switching capacity", ko: "개폐 용량", note: "The switching capacity is up to 6 amps." },
+    { en: "signal conditioner", ko: "신호변환기", note: "A signal conditioner converts sensor signals into a standard format." },
+    { en: "isolation / isolate", ko: "절연 / 절연하다", note: "Galvanic isolation protects the controller from interference." },
+    { en: "noise / interference", ko: "노이즈 / 간섭", note: "Electrical noise can distort the measurement." },
+    { en: "convert", ko: "변환하다", note: "It converts a 4 to 20 milliamp signal into 0 to 10 volts." },
+    { en: "sensor / actuator", ko: "센서 / 구동기", note: "Signals travel from the sensor to the PLC and then to the actuator." },
+    { en: "accuracy", ko: "정확도", note: "High accuracy is essential for process control." },
+  ]},
+  { title: '제품 장점 말하기', sub: 'Benefits', items: [
+    { en: "reliability / reliable", ko: "신뢰성 / 신뢰할 수 있는", note: "Our customers choose us for long-term reliability." },
+    { en: "downtime", ko: "가동 중단 시간", note: "This helps minimize unplanned downtime." },
+    { en: "space-saving", ko: "공간 절약형", note: "The slim design is space-saving in the control cabinet." },
+    { en: "control cabinet", ko: "제어반", note: "Everything fits neatly into the control cabinet." },
+    { en: "DIN rail mounting", ko: "DIN 레일 장착", note: "All modules support simple DIN rail mounting." },
+    { en: "easy installation", ko: "간편한 설치", note: "Push-in connection makes installation fast and easy." },
+    { en: "wiring", ko: "배선", note: "This reduces wiring effort by about 30 percent." },
+    { en: "scalable", ko: "확장 가능한", note: "The system is scalable from small machines to entire plants." },
+    { en: "harsh environment", ko: "열악한 환경", note: "It is designed to operate in harsh environments." },
+    { en: "operating temperature range", ko: "작동 온도 범위", note: "The operating temperature range is minus 40 to 70 degrees Celsius." },
+    { en: "certification / certified", ko: "인증 / 인증받은", note: "The product is certified for use in hazardous areas." },
+    { en: "lifecycle", ko: "제품 수명 주기", note: "We support customers throughout the entire product lifecycle." },
+    { en: "total cost of ownership", ko: "총소유비용(TCO)", note: "It lowers the total cost of ownership over time." },
+  ]},
+  { title: '업계 흐름', sub: 'Industry trends', items: [
+    { en: "smart factory", ko: "스마트 팩토리", note: "More and more customers are moving toward smart factories." },
+    { en: "digitalization", ko: "디지털화", note: "Digitalization is changing the way plants are operated." },
+    { en: "Industry 4.0", ko: "인더스트리 4.0", note: "This is a key building block for Industry 4.0." },
+    { en: "predictive maintenance", ko: "예지 보전", note: "Predictive maintenance helps detect problems before failures occur." },
+    { en: "energy efficiency", ko: "에너지 효율", note: "Energy efficiency is a top priority for our customers." },
+    { en: "electrification", ko: "전동화, 전기화", note: "Electrification is driving demand across many industries." },
+    { en: "end user / machine builder / system integrator", ko: "최종 사용자 / 기계 제작사 / 시스템 통합업체", note: "We work closely with machine builders and system integrators." },
+  ]},
+  { title: '발표·업무 공통 단어', sub: 'General', items: [
+    { en: "agenda", ko: "안건, 순서" },
+    { en: "overview", ko: "개요" },
+    { en: "objective", ko: "목표" },
+    { en: "milestone", ko: "주요 단계, 중간 목표" },
+    { en: "deliverable", ko: "산출물, 결과물" },
+    { en: "stakeholder", ko: "이해관계자" },
+    { en: "timeline", ko: "일정" },
+    { en: "budget", ko: "예산" },
+    { en: "outcome", ko: "결과" },
+    { en: "implication", ko: "시사점, 영향" },
+    { en: "trend", ko: "추세" },
+    { en: "approach", ko: "접근 방식" },
+    { en: "proposal", ko: "제안" },
+    { en: "feasibility", ko: "실현 가능성" },
+    { en: "bottleneck", ko: "병목, 걸림돌" },
+    { en: "follow up", ko: "후속 조치하다" },
+    { en: "on track", ko: "계획대로 진행 중인" },
+    { en: "action item", ko: "해야 할 일, 실행 항목" },
+  ]},
+];
+
+/* ───────────── 저장소 (이 브라우저에만) ───────────── */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+};
+let myWords = store.get('ee.myWords', []);
+let stars = new Set(store.get('ee.stars', []));
+
+/* ───────────── 렌더링 ───────────── */
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const keyOf = it => it.en;
+
+function cardHTML(it, opts = {}) {
+  const starred = stars.has(keyOf(it));
+  const main = it.from
+    ? `<div class="pair"><div class="from">${esc(it.from)}</div><div class="arrow">→</div><div class="en">${esc(it.en)}</div></div>`
+    : `<div class="en">${esc(it.en)}</div>`;
+  return `<div class="card" data-search="${esc((it.en + ' ' + it.ko + ' ' + (it.from||'') + ' ' + (it.note||'')).toLowerCase())}">
+    <div class="body">${main}
+      <div class="ko">${esc(it.ko)}</div>
+      ${it.note ? `<div class="note">${esc(it.note)}</div>` : ''}
+    </div>
+    <div class="actions">
+      <button class="iconbtn" data-act="say" data-text="${esc(it.en)}" title="발음 듣기">🔊</button>
+      <button class="iconbtn" data-act="copy" data-text="${esc(it.en)}" title="복사">📋</button>
+      <button class="iconbtn ${starred ? 'on' : ''}" data-act="star" data-key="${esc(keyOf(it))}" title="즐겨찾기">${starred ? '★' : '☆'}</button>
+      ${opts.deletable ? `<button class="iconbtn" data-act="del" data-key="${esc(it.en)}" title="삭제">✕</button>` : ''}
+    </div>
+  </div>`;
+}
+
+function groupsHTML(groups, opts) {
+  return groups.map(g => `<div class="group"><h2>${esc(g.title)} <small>${esc(g.sub || '')}</small></h2>
+    ${g.items.length ? g.items.map(it => cardHTML(it, opts)).join('') : `<div class="empty">${esc(g.empty || '')}</div>`}
+  </div>`).join('');
+}
+
+function render() {
+  document.getElementById('panel-phrases').innerHTML = groupsHTML(PHRASES);
+  document.getElementById('panel-soften').innerHTML = groupsHTML(SOFTEN);
+
+  document.getElementById('panel-vocab').innerHTML =
+    `<div class="group"><h2>내 단어 <small>My words</small></h2>
+      ${myWords.length ? myWords.map(it => cardHTML(it, { deletable: true })).join('') : '<div class="empty">아직 추가한 단어가 없어요. 아래에서 업무에 쓰는 단어를 추가해 보세요.</div>'}
+      <form class="add" id="addForm">
+        <input name="en" placeholder="영어 (예: yield rate)" required />
+        <input name="ko" placeholder="뜻 (예: 수율)" required />
+        <input name="note" placeholder="예문이나 메모 (선택)" />
+        <button type="submit">추가</button>
+      </form>
+      <div class="row">
+        <button class="btn ghost" id="exportWords">내 단어 내보내기</button>
+        <label class="btn ghost" style="cursor:pointer">불러오기<input type="file" id="importWords" accept=".json" hidden></label>
+      </div>
+    </div>` + groupsHTML(VOCAB_BASE);
+
+  const all = [...PHRASES, ...SOFTEN, ...VOCAB_BASE].flatMap(g => g.items).concat(myWords);
+  const starredItems = all.filter((it, i, arr) => stars.has(keyOf(it)) && arr.findIndex(x => keyOf(x) === keyOf(it)) === i);
+  document.getElementById('panel-starred').innerHTML = groupsHTML([{ title: '즐겨찾기', sub: '발표 전에 빠르게 훑어보기', items: starredItems, empty: '☆를 눌러 자주 볼 문장을 모아두세요.' }]);
+
+  applySearch();
+  bindVocabForm();
+}
+
+function bindVocabForm() {
+  const f = document.getElementById('addForm');
+  f.onsubmit = e => {
+    e.preventDefault();
+    const d = Object.fromEntries(new FormData(f));
+    const item = { en: d.en.trim(), ko: d.ko.trim() };
+    if (d.note.trim()) item.note = d.note.trim();
+    if (!item.en || !item.ko) return;
+    myWords = myWords.filter(w => w.en !== item.en).concat(item);
+    store.set('ee.myWords', myWords);
+    render();
+    document.querySelector('#addForm input[name=en]').focus();
+  };
+  document.getElementById('exportWords').onclick = () => {
+    const blob = new Blob([JSON.stringify(myWords, null, 2)], { type: 'application/json' });
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'my-words.json' });
+    a.click(); URL.revokeObjectURL(a.href);
+  };
+  document.getElementById('importWords').onchange = async e => {
+    const file = e.target.files[0]; if (!file) return;
+    try {
+      const list = JSON.parse(await file.text());
+      if (!Array.isArray(list)) throw 0;
+      const map = new Map(myWords.map(w => [w.en, w]));
+      list.filter(w => w && w.en && w.ko).forEach(w => map.set(w.en, { en: String(w.en), ko: String(w.ko), ...(w.note ? { note: String(w.note) } : {}) }));
+      myWords = [...map.values()]; store.set('ee.myWords', myWords); render(); toast('불러왔어요');
+    } catch { toast('파일 형식이 맞지 않아요'); }
+  };
+}
+
+/* ───────────── 검색 ───────────── */
+function applySearch() {
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  document.querySelectorAll('section.panel .group').forEach(g => {
+    let shown = 0;
+    g.querySelectorAll('.card').forEach(c => {
+      const hit = !q || c.dataset.search.includes(q);
+      c.style.display = hit ? '' : 'none';
+      if (hit) shown++;
+    });
+    const hasCards = g.querySelector('.card');
+    g.style.display = (!q || !hasCards || shown) ? '' : 'none';
+  });
+}
+document.getElementById('q').addEventListener('input', applySearch);
+
+/* ───────────── 탭 ───────────── */
+function showTab(name) {
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.querySelectorAll('section.panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+  store.set('ee.tab', name);
+}
+document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+
+/* ───────────── 버튼 동작 ───────────── */
+function speak(text, rate = 0.95) {
+  if (!('speechSynthesis' in window)) { toast('이 브라우저는 음성 읽기를 지원하지 않아요'); return; }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text.replace(/_+/g, 'blank'));
+  u.lang = 'en-US'; u.rate = rate;
+  const v = speechSynthesis.getVoices().find(v => v.lang === 'en-US');
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 1400);
+}
+
+document.addEventListener('click', async e => {
+  const en = e.target.closest('.en');
+  if (en && document.body.classList.contains('practice')) { en.classList.toggle('revealed'); return; }
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const act = b.dataset.act;
+  if (act === 'say') speak(b.dataset.text);
+  if (act === 'copy') {
+    try { await navigator.clipboard.writeText(b.dataset.text); toast('복사했어요'); } catch { toast('복사하지 못했어요'); }
+  }
+  if (act === 'star') {
+    const k = b.dataset.key;
+    stars.has(k) ? stars.delete(k) : stars.add(k);
+    store.set('ee.stars', [...stars]); render();
+  }
+  if (act === 'del') {
+    myWords = myWords.filter(w => w.en !== b.dataset.key);
+    store.set('ee.myWords', myWords); render();
+  }
+});
+
+const practice = document.getElementById('practice');
+practice.addEventListener('change', () => {
+  document.body.classList.toggle('practice', practice.checked);
+  document.querySelectorAll('.en.revealed').forEach(el => el.classList.remove('revealed'));
+});
+
+/* ───────────── 원고 ───────────── */
+const scriptEl = document.getElementById('scriptText');
+const wc = document.getElementById('wordCount');
+function updateCount() {
+  const words = scriptEl.value.trim().split(/\s+/).filter(Boolean).length;
+  // 발표 속도 약 130단어/분 기준
+  wc.textContent = words ? `${words}단어 · 약 ${Math.max(1, Math.round(words / 130))}분` : '';
+}
+scriptEl.value = store.get('ee.script', '');
+updateCount();
+scriptEl.addEventListener('input', () => { store.set('ee.script', scriptEl.value); updateCount(); });
+document.getElementById('readScript').onclick = () => scriptEl.value.trim() && speak(scriptEl.value, parseFloat(document.getElementById('rate').value));
+document.getElementById('stopScript').onclick = () => 'speechSynthesis' in window && speechSynthesis.cancel();
+
+render();
+showTab(store.get('ee.tab', 'phrases'));
+</script>
+</body>
+</html>
